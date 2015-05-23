@@ -11,9 +11,10 @@ namespace ClientSimulator
     {
         static void Main(string[] args)
         {
+            string localServiceAppKey = "debttrackerlocalkey";
             var serviceClient 
-             //   = new MobileServiceClient("http://localhost:50780/");
-             = new MobileServiceClient("https://debttracker.azure-mobile.net/","IfsLQMYiUHObNtCttJMvYenStchggQ16");
+                = new MobileServiceClient("http://localhost:50780/", localServiceAppKey);
+             //= new MobileServiceClient("https://debttracker.azure-mobile.net/","IfsLQMYiUHObNtCttJMvYenStchggQ16");
 
             var todoItemsTable = serviceClient.GetTable<TodoItem>();
             todoItemsTable.InsertAsync(new TodoItem()

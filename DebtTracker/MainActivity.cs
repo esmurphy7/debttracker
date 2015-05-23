@@ -6,12 +6,15 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Microsoft.WindowsAzure.MobileServices;
+using DebtTracker.MobileService;
 
 namespace DebtTracker
 {
     [Activity(Label = "DebtTracker", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     { 
+        private MobileServiceUser user;
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -21,15 +24,18 @@ namespace DebtTracker
 
             // Set UI eventhandlers
             var signUpBtn = FindViewById<Button>(Resource.Id.signupbutton);
-            signUpBtn.Click += OnSignUpButtonClick;
+            var signInBtn = FindViewById<Button>(Resource.Id.button1);
+
+            signUpBtn.Click += OnSignUpButtonClick;            
+            signInBtn.Click += OnSignInButtonClick;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="evtArgs"></param>
-        private void OnSignUpButtonClick(object sender, EventArgs evtArgs)
+        /// <param name="?"></param>
+        private void OnSignUpButtonClick(object sender, EventArgs evtargs)
         {
             var alertBuilder = new AlertDialog.Builder(this);
             alertBuilder.SetMessage("Sign Up clicked")
@@ -39,6 +45,37 @@ namespace DebtTracker
                         })
                         .SetTitle("Sign Up Test Dialog")
                         .Show();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="evtArgs"></param>
+        private void OnSignInButtonClick(object sender, EventArgs evtArgs)
+        {
+            var alertBuilder = new AlertDialog.Builder(this);
+            try
+            {
+                MobileServiceManager.Authenticate(user, this);
+                alertBuilder.SetMessage(String.Format("{0} logged in!",user.UserId))
+                        .SetPositiveButton("Ok", (sendr, args) =>
+                        {
+                            // ok'd
+                        })
+                        .SetTitle("Authentication")
+                        .Show();
+            }
+            catch (Exception ex)
+            {
+                alertBuilder.SetMessage(String.Format("login failed: {0}",ex.Message))
+                        .SetPositiveButton("Ok", (sendr, args) =>
+                        {
+                            // ok'd
+                        })
+                        .SetTitle("Authentication")
+                        .Show();
+            }
         }
     }
 }
