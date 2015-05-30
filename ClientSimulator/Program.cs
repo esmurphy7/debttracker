@@ -1,28 +1,34 @@
 ﻿using Microsoft.WindowsAzure.MobileServices;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ClientSimulator
 {
     class Program
-    {
+    {      
         static void Main(string[] args)
         {
-            string localServiceAppKey = "debttrackerlocalkey";
-            var serviceClient 
-                = new MobileServiceClient("http://localhost:50780/", localServiceAppKey);
-             //= new MobileServiceClient("https://debttracker.azure-mobile.net/","IfsLQMYiUHObNtCttJMvYenStchggQ16");
+            Tester tester = new Tester();            
+                
+            while(true)
+            {
+                tester.run();
 
-            var todoItemsTable = serviceClient.GetTable<TodoItem>();
-            todoItemsTable.InsertAsync(new TodoItem()
+                Console.WriteLine("Again?(y/n)");
+                string again = Console.ReadLine();
+                if (!again.Equals("y"))
                 {
-                    Text = "from console app",
-                    Complete = false
-                });
-            Console.ReadLine();
+                    break;
+                } 
+            }                       
         }
+
+        
     }
 }
