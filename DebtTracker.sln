@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebtTracker", "DebtTracker\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientSimulator", "ClientSimulator\ClientSimulator.csproj", "{A924CDE2-9C66-4B3C-9D0F-8BAACA17F46D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DebttrackerMobileServiceRepository", "DebttrackerMobileServiceRepository\DebttrackerMobileServiceRepository.csproj", "{ACA19AF9-D5FB-4087-9985-96E0F4047636}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{A924CDE2-9C66-4B3C-9D0F-8BAACA17F46D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A924CDE2-9C66-4B3C-9D0F-8BAACA17F46D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A924CDE2-9C66-4B3C-9D0F-8BAACA17F46D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACA19AF9-D5FB-4087-9985-96E0F4047636}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACA19AF9-D5FB-4087-9985-96E0F4047636}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACA19AF9-D5FB-4087-9985-96E0F4047636}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACA19AF9-D5FB-4087-9985-96E0F4047636}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

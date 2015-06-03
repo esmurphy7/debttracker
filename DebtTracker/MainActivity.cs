@@ -6,7 +6,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Microsoft.WindowsAzure.MobileServices;
-using DebtTracker.MobileService;
+using DebtrackerMobileServiceRepository.MobileServiceRepository;
 
 namespace DebtTracker
 {
@@ -57,7 +57,7 @@ namespace DebtTracker
             var alertBuilder = new AlertDialog.Builder(this);
             try
             {
-                MobileServiceManager.Authenticate(user, this);
+                var client = MobileServiceRepository.serviceClient;
                 alertBuilder.SetMessage(String.Format("{0} logged in!",user.UserId))
                         .SetPositiveButton("Ok", (sendr, args) =>
                         {

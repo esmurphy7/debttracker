@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClientSimulator
+namespace DebttrackerMobileServiceRepository.Models
 {
-    public class TodoItem
+    public class TodoItem : IEntityModel
     {
         public string id { get; set; }
 
