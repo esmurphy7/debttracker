@@ -67,12 +67,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\LoginRequest.cs" />
     <Compile Include="MobileServiceRepository\MobileServiceRepository.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Debt.cs" />
     <Compile Include="Models\Friend.cs" />
     <Compile Include="Models\Group.cs" />
-    <Compile Include="Models\IEntityModel.cs" />
+    <Compile Include="Models\EntityModel.cs" />
     <Compile Include="Models\TodoItem.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

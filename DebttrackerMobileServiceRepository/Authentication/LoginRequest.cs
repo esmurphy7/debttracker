@@ -5,14 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClientSimulator
+namespace DebttrackerMobileServiceRepository.Authentication
 {
     public class LoginRequest
     {
-        [JsonProperty("username")]
+        [JsonProperty(PropertyName="username")]
         public string Username { get; set; }
-
-        [JsonProperty("password")]
+        [JsonProperty(PropertyName = "password")]
         public string Password { get; set; }
     }
 }

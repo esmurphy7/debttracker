@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace DebttrackerMobileServiceRepository.Models
 {
-    public class TodoItem : IEntityModel
+    public class TodoItem : EntityModel
     {
-        public string id { get; set; }
-
         [JsonProperty(PropertyName="Text")]
         public string Text { get; set; }
 

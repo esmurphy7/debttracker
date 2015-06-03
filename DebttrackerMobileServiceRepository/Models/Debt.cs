@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DebttrackerMobileServiceRepository.Models
 {
-    public class Debt : IEntityModel
+    public class Debt : EntityModel
     {
         [JsonProperty(PropertyName = "SourceUser")]
         public User SourceUser { get; set; }

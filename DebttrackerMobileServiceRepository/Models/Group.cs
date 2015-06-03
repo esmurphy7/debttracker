@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DebttrackerMobileServiceRepository.Models
 {
-    public class Group : IEntityModel
+    public class Group : EntityModel
     {
         [JsonProperty(PropertyName = "Users")]
         public ICollection<User> Users { get; set; }

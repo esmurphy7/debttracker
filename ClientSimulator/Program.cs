@@ -14,21 +14,9 @@ namespace ClientSimulator
     {      
         static void Main(string[] args)
         {
-            Tester tester = new Tester();            
-                
-            while(true)
-            {
-                tester.run();
-
-                Console.WriteLine("Again?(y/n)");
-                string again = Console.ReadLine();
-                if (!again.Equals("y"))
-                {
-                    break;
-                } 
-            }                       
-        }
-
-        
+            Tester tester = new Tester();
+            tester.run();
+            Console.ReadLine();           
+        }        
     }
 }
