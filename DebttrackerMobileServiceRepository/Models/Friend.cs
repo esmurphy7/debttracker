@@ -9,11 +9,11 @@ namespace DebttrackerMobileServiceRepository.Models
 {
     public class Friend : EntityModel
     {
-        [JsonProperty(PropertyName="UserA")]
+        [JsonProperty(PropertyName = "UserA", Required = Required.Always)]
         public User UserA { get; set; }
-        [JsonProperty(PropertyName = "UserB")]
+        [JsonProperty(PropertyName = "UserB", Required = Required.Always)]
         public User UserB { get; set; }
-        [JsonProperty(PropertyName = "Status")]
+        [JsonProperty(PropertyName = "Status", Required = Required.Always)]
         public FriendStatus Status { get; set; }
     }
 

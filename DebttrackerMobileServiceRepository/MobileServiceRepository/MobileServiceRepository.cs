@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using DebttrackerMobileServiceRepository.Models;
 using LinqKit;
 using System.Linq.Expressions;
+using System.Net;
+using System.Net.Http;
 using DebttrackerMobileServiceRepository.Authentication;
 
 namespace DebtrackerMobileServiceRepository.MobileServiceRepository
@@ -25,7 +27,7 @@ namespace DebtrackerMobileServiceRepository.MobileServiceRepository
             localEndpoint,
             localAppKey            
         );
-
+        
         /// <summary>
         /// Get an item of type T specified by an id
         /// </summary>
@@ -93,18 +95,18 @@ namespace DebtrackerMobileServiceRepository.MobileServiceRepository
             var table = _serviceClient.GetTable<T>();                       
 
             // query under the first expression
-            IMobileServiceTableQuery<T> query = table.Where(expressions[0]);
+            IMobileServiceTableQuery<T> queryResults = table.Where(expressions[0]);
 
             // query under the remaining expressions
             for (int i = 1; i<expressions.Length; i++)
             {
-                query = query.Where(expressions[i]);
+                queryResults = queryResults.Where(expressions[i]);
             }
 
             // convert results to collection
-            if(query != null)
+            if(queryResults != null)
             {
-                items = await query.ToCollectionAsync<T>();
+                items = await queryResults.ToCollectionAsync<T>();
             }
             
             return items;
@@ -202,21 +204,70 @@ namespace DebtrackerMobileServiceRepository.MobileServiceRepository
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public static async Task LoginAsync(LoginRequest request)
+        public static async Task<MobileServiceUser> LoginAsync(LoginRequest request)
         {
-            var serviceUser = await MobileServiceRepository._serviceClient.InvokeApiAsync<LoginRequest, MobileServiceUser>("CustomLogin", request);
+            var serviceUser = await _serviceClient.InvokeApiAsync<LoginRequest, MobileServiceUser>("CustomLogin", request);
             _serviceClient.CurrentUser = serviceUser;
+            return serviceUser;
         }
 
         /// <summary>
-        /// Overload: Login via the customlogin api endpoint by pass explicit username and password
+        /// Overload: Login via the customlogin api endpoint by passing explicit username and password
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
         public static async Task LoginAsync(string username, string password)
         {
-            await MobileServiceRepository.LoginAsync(new LoginRequest() { Username = username, Password = password });
+            await LoginAsync(new LoginRequest() { Username = username, Password = password });
+        }
+
+        /// <summary>
+        /// Register via the custom registration api endpoint by passing a registration request
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public static async Task<string> RegisterAsync(RegistrationRequest request)
+        {
+            string responseMessage = String.Empty;
+
+            var response = await _serviceClient.InvokeApiAsync<RegistrationRequest, HttpResponseMessage>("CustomRegistration", request);
+
+            var statusCode = response.StatusCode;
+
+            switch (statusCode)
+            {
+                case HttpStatusCode.Created:
+                    break;
+                default:
+                    responseMessage = response.Content.ToString();
+                    break;
+            }
+
+            return responseMessage;
+        }
+
+        /// <summary>
+        /// Overload: Register via the custom registration api endpoint by passing explicit username and password
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public static async Task<string> RegisterAsync(string email, string username, string password)
+        {
+            string responseMessage = String.Empty;
+
+            var request = new RegistrationRequest()
+            {
+                Email = email,
+                Username = username,
+                Password = password
+            };
+
+            responseMessage = await RegisterAsync(request);
+
+            return responseMessage;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace ClientSimulator
         static void Main(string[] args)
         {
             Tester tester = new Tester();
-            tester.run();
+            tester.Run().Wait();
             Console.ReadLine();           
         }        
     }

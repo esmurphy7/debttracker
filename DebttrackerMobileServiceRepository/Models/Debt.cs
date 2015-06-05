@@ -9,13 +9,13 @@ namespace DebttrackerMobileServiceRepository.Models
 {
     public class Debt : EntityModel
     {
-        [JsonProperty(PropertyName = "SourceUser")]
+        [JsonProperty(PropertyName = "SourceUser", Required = Required.Always)]
         public User SourceUser { get; set; }
 
-        [JsonProperty(PropertyName = "TargetUser")]
+        [JsonProperty(PropertyName = "TargetUser", Required = Required.Always)]
         public User TargetUser { get; set; }
 
-        [JsonProperty(PropertyName = "Amount")]
+        [JsonProperty(PropertyName = "Amount", Required = Required.Always)]
         public double Amount { get; set; }
 
         [JsonProperty(PropertyName = "Description")]

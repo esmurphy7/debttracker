@@ -9,7 +9,7 @@ namespace DebttrackerMobileServiceRepository.Models
 {
     public class User : EntityModel
     {
-        [JsonProperty(PropertyName = "Account")]
+        [JsonProperty(PropertyName = "Account", Required = Required.Always)]
         public Account Account { get; set; }
         [JsonProperty(PropertyName = "Groups")]
         public ICollection<Group> Groups { get; set; }

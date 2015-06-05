@@ -9,11 +9,16 @@ namespace DebttrackerMobileServiceRepository.Models
 {
     public class Account : EntityModel
     {
-        [JsonProperty(PropertyName = "Username")]
+        [JsonProperty(PropertyName = "Email", Required = Required.Always)]
+        public string Email { get; set; }
+
+        [JsonProperty(PropertyName = "Username", Required = Required.Always)]
         public string Username { get; set; }
-        [JsonProperty(PropertyName = "Salt")]
+
+        [JsonProperty(PropertyName = "Salt", Required = Required.Always)]
         public byte[] Salt { get; set; }
-        [JsonProperty(PropertyName = "SaltedAndHashedPassword")]
+
+        [JsonProperty(PropertyName = "SaltedAndHashedPassword", Required = Required.Always)]
         public byte[] SaltedAndHashedPassword { get; set; }
     }
 }

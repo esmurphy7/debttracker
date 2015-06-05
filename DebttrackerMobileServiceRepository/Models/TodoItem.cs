@@ -9,7 +9,7 @@ namespace DebttrackerMobileServiceRepository.Models
 {
     public class TodoItem : EntityModel
     {
-        [JsonProperty(PropertyName="Text")]
+        [JsonProperty(PropertyName = "Text", Required = Required.Always)]
         public string Text { get; set; }
 
         [JsonProperty(PropertyName = "Complete")]
