@@ -5,6 +5,7 @@ using Microsoft.WindowsAzure.MobileServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,17 +19,17 @@ namespace ClientSimulator
             {
                 Init();
 
-                string registerResponse = await TestRegistrationASync();
+                string registerResponse = await TestRegistrationAsync();
                 Console.WriteLine(registerResponse);
 
                 string loginResponse = await TestLoginAsync();
                 Console.WriteLine(loginResponse);
 
-                //string insertResponse = await TestInsertAsync();
-                //Console.WriteLine(insertResponse);
+                string insertResponse = await TestInsertAsync();
+                Console.WriteLine(insertResponse);
 
                 //string getAllResponse = await TestGetAllSatisfyingItemsAsync();
-                //Console.WriteLine(getAllResponse);  
+                //Console.WriteLine(getAllResponse);
 
                 //string updateItemsResponse = await TestUpdateItemSetAsync();
                 //Console.WriteLine(updateItemsResponse);
@@ -89,9 +90,16 @@ namespace ClientSimulator
                 string curTime = DateTime.Now.ToString("h:mm:ss tt");
                 var item = new TodoItem()
                 {
-                    //Text = "from console app - " + curTime,
+                    Text = "from console app - " + curTime,
                     Complete = false
                 };
+                //var item = new Account()
+                //{
+                //    Salt = new byte[]{1,4,5},
+                //    Email = "example@domain.com",
+                //    Username = "supposedtofail",
+                //    SaltedAndHashedPassword = new byte[] { 1,45,5,}
+                //};
                 await MobileServiceRepository.InsertItemAsync<TodoItem>(item);
                 response = String.Format("Inserted item with id: {0}", item.id);
             }
@@ -171,7 +179,7 @@ namespace ClientSimulator
             return response;
         }
 
-        private async Task<string> TestRegistrationASync()
+        private async Task<string> TestRegistrationAsync()
         {
             string response = String.Empty;
             string testEmail = "example@domain.com";
@@ -181,7 +189,16 @@ namespace ClientSimulator
             try
             {
                 var responseMessage = await MobileServiceRepository.RegisterAsync(testEmail, testUsername, testPassword);
-                response = String.Format("Registered user with username: {0}, Response: {1}", testUsername, responseMessage.Message);
+
+                switch (responseMessage.StatusCode)
+                {
+                    case HttpStatusCode.Created:
+                        response = String.Format("Registered user with username: {0}, Response: {1}", testUsername, responseMessage.Message);
+                        break;
+                    default:
+                        response = String.Format("Unable to register user {0}: ", testUsername);
+                        break;
+                }
             }
             catch (Exception e)
             {

@@ -11,22 +11,17 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using DebttrackerMobileServiceRepository.Authentication;
+using DebttrackerMobileServiceRepository.MobileServiceRepository;
 using Newtonsoft.Json.Linq;
 
 namespace DebtrackerMobileServiceRepository.MobileServiceRepository
 {
     public static class MobileServiceRepository
     {
-        private const string localEndpoint = "http://localhost:50780/";
-        private const string prodEndpoint = "https://debttracker.azure-mobile.net/";
-                
-        private const string localAppKey = "debttrackerlocalkey";
-        private const string prodAppKey = "IfsLQMYiUHObNtCttJMvYenStchggQ16";
-
-        private static MobileServiceClient _serviceClient = new MobileServiceClient
+        private static readonly MobileServiceClient ServiceClient = new MobileServiceClient
         (
-            localEndpoint,
-            localAppKey            
+            MobileServiceEndpoints.LocalURL,
+            MobileServiceKeys.LocalAppKey
         );
         
         /// <summary>
@@ -37,7 +32,7 @@ namespace DebtrackerMobileServiceRepository.MobileServiceRepository
         /// <returns></returns>
         public static async Task<T> GetItemAsync<T>(string id) where T : EntityModel
         {
-            var table = _serviceClient.GetTable<T>();
+            var table = ServiceClient.GetTable<T>();
 
             T item = await table.LookupAsync(id);
 
@@ -52,7 +47,7 @@ namespace DebtrackerMobileServiceRepository.MobileServiceRepository
         /// <returns></returns>
         public static async Task<T> GetItemAsync<T>(T item) where T : EntityModel
         {
-            var table = _serviceClient.GetTable<T>();
+            var table = ServiceClient.GetTable<T>();
 
             T resultItem = await table.LookupAsync(item.id);
 
@@ -69,7 +64,7 @@ namespace DebtrackerMobileServiceRepository.MobileServiceRepository
             ICollection<T> items = new List<T>();
 
             // get the reference to the database table
-            var table = _serviceClient.GetTable<T>();
+            var table = ServiceClient.GetTable<T>();
 
             items = await table.ToCollectionAsync<T>();
 
@@ -93,7 +88,7 @@ namespace DebtrackerMobileServiceRepository.MobileServiceRepository
             ICollection<T> items = new List<T>();
 
             // get the reference to the database table
-            var table = _serviceClient.GetTable<T>();                       
+            var table = ServiceClient.GetTable<T>();                       
 
             // query under the first expression
             IMobileServiceTableQuery<T> queryResults = table.Where(expressions[0]);
@@ -121,7 +116,7 @@ namespace DebtrackerMobileServiceRepository.MobileServiceRepository
         /// <returns></returns>
         public static async Task InsertItemAsync<T>(T item) where T : EntityModel
         {
-            var table = _serviceClient.GetTable<T>();
+            var table = ServiceClient.GetTable<T>();
 
             await table.InsertAsync(item);
         }
@@ -134,7 +129,7 @@ namespace DebtrackerMobileServiceRepository.MobileServiceRepository
         /// <returns></returns>
         public static async Task InsertItemSetAsync<T>(ICollection<T> itemSet) where T : EntityModel
         {
-            var table = _serviceClient.GetTable<T>();
+            var table = ServiceClient.GetTable<T>();
 
             foreach(T item in itemSet)
             {
@@ -150,7 +145,7 @@ namespace DebtrackerMobileServiceRepository.MobileServiceRepository
         /// <returns></returns>
         public static async Task UpdateItemAsync<T>(T item) where T : EntityModel
         {
-            var table = _serviceClient.GetTable<T>();
+            var table = ServiceClient.GetTable<T>();
 
             await table.UpdateAsync(item);
         }
@@ -163,7 +158,7 @@ namespace DebtrackerMobileServiceRepository.MobileServiceRepository
         /// <returns></returns>
         public static async Task UpdateItemSetAsync<T>(ICollection<T> itemSet) where T : EntityModel
         {
-            var table = _serviceClient.GetTable<T>();
+            var table = ServiceClient.GetTable<T>();
 
             foreach(T item in itemSet)
             {
@@ -179,7 +174,7 @@ namespace DebtrackerMobileServiceRepository.MobileServiceRepository
         /// <returns></returns>
         public static async Task DeleteItemAsync<T>(T item) where T : EntityModel
         {
-            var table = _serviceClient.GetTable<T>();
+            var table = ServiceClient.GetTable<T>();
 
             await table.DeleteAsync(item);
         }
@@ -192,7 +187,7 @@ namespace DebtrackerMobileServiceRepository.MobileServiceRepository
         /// <returns></returns>
         public static async Task DeleteItemSetAsync<T>(ICollection<T> itemSet) where T : EntityModel
         {
-            var table = _serviceClient.GetTable<T>();
+            var table = ServiceClient.GetTable<T>();
 
             foreach(T item in itemSet)
             {
@@ -201,19 +196,19 @@ namespace DebtrackerMobileServiceRepository.MobileServiceRepository
         }
 
         /// <summary>
-        /// Login via the customlogin api endpoint by passing a login request
+        /// LoginURL via the customlogin api endpoint by passing a login request
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         public static async Task<MobileServiceUser> LoginAsync(LoginRequest request)
         {
-            var serviceUser = await _serviceClient.InvokeApiAsync<LoginRequest, MobileServiceUser>("CustomLogin", request);
-            _serviceClient.CurrentUser = serviceUser;
+            var serviceUser = await ServiceClient.InvokeApiAsync<LoginRequest, MobileServiceUser>(MobileServiceEndpoints.LoginURL, request);
+            ServiceClient.CurrentUser = serviceUser;
             return serviceUser;
         }
 
         /// <summary>
-        /// Overload: Login via the customlogin api endpoint by passing explicit username and password
+        /// Overload: LoginURL via the customlogin api endpoint by passing explicit username and password
         /// </summary>
         /// <param name="username"></param>
         /// <param name="password"></param>
@@ -224,18 +219,18 @@ namespace DebtrackerMobileServiceRepository.MobileServiceRepository
         }
 
         /// <summary>
-        /// Register via the custom registration api endpoint by passing a registration request
+        /// RegistrationURL via the custom registration api endpoint by passing a registration request
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         public static async Task<RegistrationResponse> RegisterAsync(RegistrationRequest request)
         {
-            var response = await _serviceClient.InvokeApiAsync<RegistrationRequest, RegistrationResponse>("CustomRegistration", request);
+            var response = await ServiceClient.InvokeApiAsync<RegistrationRequest, RegistrationResponse>(MobileServiceEndpoints.RegistrationURL, request);
             return response;
         }
 
         /// <summary>
-        /// Overload: Register via the custom registration api endpoint by passing explicit username and password
+        /// Overload: RegistrationURL via the custom registration api endpoint by passing explicit username and password
         /// </summary>
         /// <param name="email"></param>
         /// <param name="username"></param>
