@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Authentication\LoginRequest.cs" />
     <Compile Include="Authentication\RegistrationRequest.cs" />
+    <Compile Include="Authentication\RegistrationResponse.cs" />
     <Compile Include="MobileServiceRepository\MobileServiceRepository.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Debt.cs" />

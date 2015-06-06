@@ -181,7 +181,7 @@ namespace ClientSimulator
             try
             {
                 var responseMessage = await MobileServiceRepository.RegisterAsync(testEmail, testUsername, testPassword);
-                response = String.Format("Registered user with username: {0}, Response: {1}", testUsername, responseMessage);
+                response = String.Format("Registered user with username: {0}, Response: {1}", testUsername, responseMessage.Message);
             }
             catch (Exception e)
             {

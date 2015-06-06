@@ -11,6 +11,7 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using DebttrackerMobileServiceRepository.Authentication;
+using Newtonsoft.Json.Linq;
 
 namespace DebtrackerMobileServiceRepository.MobileServiceRepository
 {
@@ -227,24 +228,10 @@ namespace DebtrackerMobileServiceRepository.MobileServiceRepository
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public static async Task<string> RegisterAsync(RegistrationRequest request)
+        public static async Task<RegistrationResponse> RegisterAsync(RegistrationRequest request)
         {
-            string responseMessage = String.Empty;
-
-            var response = await _serviceClient.InvokeApiAsync<RegistrationRequest, HttpResponseMessage>("CustomRegistration", request);
-
-            var statusCode = response.StatusCode;
-
-            switch (statusCode)
-            {
-                case HttpStatusCode.Created:
-                    break;
-                default:
-                    responseMessage = response.Content.ToString();
-                    break;
-            }
-
-            return responseMessage;
+            var response = await _serviceClient.InvokeApiAsync<RegistrationRequest, RegistrationResponse>("CustomRegistration", request);
+            return response;
         }
 
         /// <summary>
@@ -254,10 +241,8 @@ namespace DebtrackerMobileServiceRepository.MobileServiceRepository
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public static async Task<string> RegisterAsync(string email, string username, string password)
+        public static async Task<RegistrationResponse> RegisterAsync(string email, string username, string password)
         {
-            string responseMessage = String.Empty;
-
             var request = new RegistrationRequest()
             {
                 Email = email,
@@ -265,9 +250,9 @@ namespace DebtrackerMobileServiceRepository.MobileServiceRepository
                 Password = password
             };
 
-            responseMessage = await RegisterAsync(request);
+            var response = await RegisterAsync(request);
 
-            return responseMessage;
+            return response;
         }
     }
 }
